@@ -28,20 +28,13 @@ from sklearn.metrics import  accuracy_score
 
 digits = datasets.load_digits()
 
-_, axes = plt.subplots(nrows=1, ncols=4, figsize=(10, 3))
-for ax, image, label in zip(axes, digits.images, digits.target):
-    ax.set_axis_off()
-    ax.imshow(image, cmap=plt.cm.gray_r, interpolation='nearest')
-    ax.set_title('Training: %i' % label)
-
 ###############################################################################
 # Classification
 # --------------
 #
 # To apply a classifier on this data, we need to flatten the images, turning
 # each 2-D array of grayscale values from shape ``(8, 8)`` into shape
-# ``(64,)``. Subsequently, the entire dataset will be of shape
-# ``(n_samples, n_features)``, where ``n_samples`` is the number of images and
+# ``(64,)``. Subsequently, the entire dataset will be of s# ``(n_samples, n_features)``, where ``n_samples`` is the number of images and
 # ``n_features`` is the total number of pixels in each image.
 #
 # We can then split the data into train and test subsets and fit a support
@@ -70,14 +63,18 @@ for gamma_vals in gamma:
     # Predict the value of the digit on the test subset
     predicted = clf.predict(X_test)
     predicted1=clf.predict(X_train)
-    trainpred.append(predicted1)
-    testpred.append(predicted)
+    trainpred.append(accuracy_score(y_train,predicted1))
+    testpred.append(accuracy_score(y_test,predicted))
     print(gamma_vals,accuracy_score(y_train,predicted1)*100,accuracy_score(y_test,predicted)*100)
    
-
+#print(trainpred)
+#print(testpred)
+#print(gamma)
 plt.plot(gamma,trainpred,label="trainining accuracy")
 plt.plot(gamma,testpred,label="testing accuracy")
 plt.legend()
+plt.xlabel("gamma")
+plt.ylabel("accuracy")
 plt.show()
 
     ###############################################################################
