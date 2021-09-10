@@ -8,3 +8,7 @@ Testing Samples and predictions
 
 Confusion Matrix
 ![Figure_3](https://user-images.githubusercontent.com/37702725/132055247-a81013d0-8dc4-44f8-8ef2-0189f846ba57.png)
+
+Following are the results for different hyperparameters. The results shows how metric(s) vary with the hyperparameter.
+![image](https://user-images.githubusercontent.com/37702725/132888764-fdca50b0-d305-4014-bf09-e501da1af724.png)
+
