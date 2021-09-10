@@ -55,6 +55,8 @@ data = digits.images.reshape((n_samples, -1))
 
 # Create a classifier: a support vector classifier
 gamma=[0.001,0.002,0.003,0.01]
+trainpred=[]
+testpred=[]
 for gamma_vals in gamma:
     clf = svm.SVC(gamma=gamma_vals)
 
@@ -67,6 +69,15 @@ for gamma_vals in gamma:
 
     # Predict the value of the digit on the test subset
     predicted = clf.predict(X_test)
-    print(gamma_vals,accuracy_score(y_test,predicted),f1_score(y_test,predicted,average='samples'))
+    predicted1=clf.predict(X_train)
+    trainpred.append(predicted1)
+    testpred.append(predicted)
+    print(gamma_vals,accuracy_score(y_train,predicted1)*100,accuracy_score(y_test,predicted)*100)
+   
+
+plt.plot(gamma,trainpred,label="trainining accuracy")
+plt.plot(gamma,testpred,label="testing accuracy")
+plt.legend()
+plt.show()
 
     ###############################################################################
