@@ -1,4 +1,4 @@
-# assignment2
+# assignment2 : Results of plot_classification
 
 Training examples and ground truth labels
 ![Figure_1](https://user-images.githubusercontent.com/37702725/132055125-c855713e-6821-4da2-b0f0-205807f3a572.png)
@@ -10,6 +10,8 @@ Confusion Matrix
 
 
 ![Figure_3](https://user-images.githubusercontent.com/37702725/132055247-a81013d0-8dc4-44f8-8ef2-0189f846ba57.png)
+
+# assignment3 : How metrics changes with paramters
 
 Following are the results for different hyperparameters. The results shows how metric(s) vary with the hyperparameter. We used different values of gamma. First column represent gamma value, second value represent accuracy on test data and third column represents F1 score on test data.
 
