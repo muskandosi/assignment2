@@ -33,8 +33,11 @@ The gamma parameter defines how far the influence of a single training example r
 # assignment5 : Saving best model for different parameters
 
 Parameters used :
+
 Splitting data :  [0.25, 0.5, 0.75]
+
 Different scaling factor = [0.5, 1, 2, 4]
+
 different gamma parameters = [1e-7,1e-5,1e-3,0.01,0.1,1]
 
 Result of best model:
