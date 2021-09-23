@@ -1,0 +1,101 @@
+from skimage.transform import rescale, resize, downscale_local_mean
+from sklearn.model_selection import train_test_split
+from sklearn import datasets, svm, metrics
+import numpy as np
+import matplotlib.pyplot as plt
+import numpy as np
+# Import datasets, classifiers and performance metrics
+
+from sklearn.exceptions import DataConversionWarning
+
+import sys
+import os
+import shutil
+from joblib import dump, load
+
+import math
+digits = datasets.load_digits()
+
+def create_split(data, sp):
+        X_train, X_test, y_train, y_test = train_test_split(
+        data, digits.target, test_size=sp, shuffle=False)
+        X_train, X_val, y_train, y_val = train_test_split(
+        data, digits.target, test_size=sp, shuffle=False)
+        #print(np.array(X_train).shape)
+        return X_train, X_test, y_train, y_test, X_val, y_val
+
+def rescale_resize(data,shape):
+    data_preprocessed=[]
+    data_processed=[]
+    for image in data:
+        image_rescaled = rescale(image, shape, anti_aliasing=False)
+        data_preprocessed.append(image_rescaled)
+    data_processed = np.asarray(data_preprocessed)
+    data_processed = data_processed.reshape((len(data), -1))
+    return data_processed
+
+def report(model,y_test,preds):
+    print(f"Classification report for classifier {model}:\n"
+      f"{metrics.classification_report(y_test, preds)}\n")
+candidate_model =[]
+
+def model_score(model, X_val, y_val, gamma, sp, sh):
+    acc=model.score(X_val, y_val)
+    if acc < 0.11:
+        pass
+        print("Skip shape {} split {} gamma {}". format(sh,sp,gamma))
+    candidate = {
+        'acc' :   acc,
+        'gamma' : gamma,
+        'split' : sp,
+        'shape' : sh
+        }
+    candidate_model.append(candidate)
+
+def test(X,best_model_folder, shape,split):
+    data = rescale_resize(X, shape)
+    X_train, X_test, y_train, y_test, X_val, y_val = create_split(data, split)
+
+    clf = load(os.path.join(best_model_folder,"model.joblib"))
+    predicted = clf.predict(X_test)
+    report(clf, y_test, predicted) # classification report function   
+
+mydir = "/home/sonali/MLops/mnist/models"
+if os.path.exists(mydir):
+    shutil.rmtree(mydir)
+X,Y = digits.images,digits.target 
+split_parameter = [0.25, 0.5, 0.75]
+shape_parameter = [0.5, 1, 2, 4]
+gamma_parameter = [1e-7,1e-5,1e-3,0.01,0.1,1]
+
+for sh in shape_parameter:
+    for sp in split_parameter:
+        for gamma_p in gamma_parameter:
+            #data preprocessing for rescale and reshape
+            data = rescale_resize(X,sh)
+            #model creation
+            clf = svm.SVC(gamma=gamma_p)
+            # data split function
+            X_train, X_test, y_train, y_test, X_val, y_val = create_split(data, sp) 
+            #model training
+            #print(y_train.shape)
+            #y_train = y_train.reshape(-1,1)
+            clf.fit(X_train,y_train) 
+            #appending model candidates
+            model_score(clf, X_val, y_val, gamma_p, sp, sh)
+            output = "./models/"+"s_{}_tt_{}_gamma_{}".format(sh,sp,gamma_p)
+            #saving models 
+            os.makedirs(output)
+            dump(clf, os.path.join(output,"model.joblib"))
+#finding best model on accuracy
+best_model = max(candidate_model, key = lambda x: x['acc'])  
+
+#folder for best model
+bestmodel_shape=best_model["shape"]
+bestmodel_split=best_model["split"]
+bestmodel_gamma=best_model["gamma"]
+
+best_model_folder = "./models/s_{}_tt_{}_gamma_{}".format(bestmodel_shape,bestmodel_split,bestmodel_gamma)
+
+
+test(X,best_model_folder, bestmodel_shape,bestmodel_split)
