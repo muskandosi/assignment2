@@ -60,7 +60,7 @@ def test(X,best_model_folder, shape,split):
     predicted = clf.predict(X_test)
     report(clf, y_test, predicted) # classification report function   
 
-mydir = "/home/sonali/MLops/mnist/models"
+mydir = "/home/twinkle/MLops/mnist/models"
 if os.path.exists(mydir):
     shutil.rmtree(mydir)
 X,Y = digits.images,digits.target 

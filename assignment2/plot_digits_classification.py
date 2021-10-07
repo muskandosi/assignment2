@@ -1,21 +1,6 @@
-"""
-================================
-Recognizing hand-written digits
-================================
 
-This example shows how scikit-learn can be used to recognize images of
-hand-written digits, from 0-9.
-"""
-
-print(__doc__)
-
-# Author: Gael Varoquaux <gael dot varoquaux at normalesup dot org>
-# License: BSD 3 clause
-
-# Standard scientific Python imports
 import matplotlib.pyplot as plt
 
-# Import datasets, classifiers and performance metrics
 from sklearn import datasets, svm, metrics
 from sklearn.model_selection import train_test_split
 
