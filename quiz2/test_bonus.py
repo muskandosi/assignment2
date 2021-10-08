@@ -33,7 +33,10 @@ def  test_model_not_corrupt():
 	data = digits.images.reshape((n_samples, -1))
 	X_train, X_test, y_train, y_test, X_val, y_val = ass51.create_split(data,digits.target)
 	ass51.testing_function(X_train,y_train,"model1.joblib",X_test,y_test,testing=False)
-	assert os.path.isfile("model1.joblib")
+	flag=0
+	clf=load("model1.joblib")
+	flag=1
+	assert flag==1
 
 def test_modelsame():
 	digits = datasets.load_digits()
